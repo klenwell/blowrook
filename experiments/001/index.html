@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blowrook Experiment 001</title>
+  </head>
+  <body>
+    <section>
+      <h2 id="title">Title</h2>
+      <div class="canvas"></div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log('document ready');
+        const h2Title = document.getElementById('title');
+        const titleTag = document.getElementsByTagName('title')[0];
+        h2Title.innerText = titleTag.innerText;
+      })
+    </script>
+
+<script type="module">
+
+import {forceSimulation, forceCollide, forceX} from "https://cdn.jsdelivr.net/npm/d3-force@3/+esm";
+
+const nodes = [{}, {}];
+const simulation = forceSimulation(nodes)
+    .force("x", forceX())
+    .force("collide", forceCollide(5))
+    .on("tick", () => console.log(nodes[0].x));
+
+</script>
+
+  </body>
+</html>
