@@ -1,26 +1,49 @@
 class Experiment {
     constructor(selector) {
-        this.selector = selector;
+        console.log(selector)
+        this.svg = d3.select(selector).append("svg");
+        this.circle = this.svg.append('circle');
     }
 
     run() {
-        console.log('this.selector')
-        const svg = d3.select(this.selector)
-            .append("svg")
+        this.svg
             .attr("width", 400)
             .attr("height", 400)
             .attr('stroke', '#333')
             .attr('fill', '#eee');
 
-        const circle = svg.append('circle')
+        this.circle
             .attr('cx', 200)
             .attr('cy', 200)
             .attr('r', 100)
-            .attr('stroke', 'black')
-            .attr('fill', '#ddd');
+            .attr('stroke', 'darkblue')
+            .attr('fill', 'steelblue');
 
-        console.log(svg);
-        console.log('circle?');
+        console.log(this.svg);
+
+        this.enableDrag();
+    }
+
+
+
+    enableDrag() {
+        function dragStarted(event) {
+            console.log(this);
+            d3.select(this).raise().classed("active", true);
+        }
+        function dragged(event) {
+            d3.select(this).attr("cx", event.x).attr("cy", event.y);
+        }
+        function dragEnded(event) {
+            d3.select(this).classed("active", false);
+        }
+
+        const drag = d3.drag()
+            .on("start", dragStarted)
+            .on("drag", dragged)
+            .on("end", dragEnded);
+
+        this.circle.call(drag);
     }
 }
 
