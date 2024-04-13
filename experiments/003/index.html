@@ -12,10 +12,13 @@
     <script src="https://unpkg.com/konva@9/konva.min.js"></script>
     <script src="/onload.js"></script>
     <script src="/court.js"></script>
+    <script src="/rook.js"></script>
 
     <script>
-      const court = new Court('court', 200);
-      court.draw();
+      const court = new Court('court', 100);
+      const rook = new Rook(25, 50, 80);
+      court.addRook(rook);
+      court.render();
     </script>
   </body>
 </html>

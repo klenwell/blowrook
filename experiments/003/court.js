@@ -5,12 +5,12 @@ class Court {
     constructor(selector, radius) {
         this.selector = selector
         this.radius = radius;
+        this.rooks = [];
+        this.image = this.draw();
 
         this.#stage = this.initStage(selector, radius*2, radius*2);
         this.#layer = new Konva.Layer();
         this.#stage.add(this.#layer);
-
-        this.drawSurface();
     }
 
     initStage(selector, width, height) {
@@ -22,8 +22,8 @@ class Court {
           });
     }
 
-    drawSurface() {
-        const surface = new Konva.Circle({
+    draw() {
+        return new Konva.Circle({
             x: this.radius,
             y: this.radius,
             radius: this.radius,
@@ -31,11 +31,19 @@ class Court {
             stroke: 'red',
             strokeWidth: 1
           });
-
-          this.#layer.add(surface);
     }
 
-    draw() {
+    addRook(rook) {
+        this.rooks.push(rook);
+    }
+
+    render() {
+        this.#layer.add(this.image);
+
+        this.rooks.forEach((rook) => {
+            this.#layer.add(rook.image);
+        });
+
         this.#layer.draw();
     }
 }
