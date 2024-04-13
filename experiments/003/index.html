@@ -3,18 +3,6 @@
   <head>
     <title>Blowrook Experiment 003</title>
     <link rel="stylesheet" href="basic.css">
-
-    <style>
-      body {
-        margin: 0;
-        padding: 0.5rem 1rem;
-        font-family: sans-serif;
-      }
-      #court {
-        background-color: #cccccc;
-        border:1px solid red;
-      }
-    </style>
   </head>
   <body>
     <h2 id="title">Title</h2>
@@ -23,5 +11,11 @@
 
     <script src="https://unpkg.com/konva@9/konva.min.js"></script>
     <script src="/onload.js"></script>
+    <script src="/court.js"></script>
+
+    <script>
+      const court = new Court('court', 200);
+      court.draw();
+    </script>
   </body>
 </html>
