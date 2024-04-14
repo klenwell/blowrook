@@ -28,9 +28,9 @@ class Rook {
 
     makeDraggable() {
         this.image.draggable('true');
-        rook.image.on('dragstart', (e) => { this.onDragStart(e) });
-        rook.image.on('dragmove', (e) => { this.onDrag(e) });
-        rook.image.on('dragend', (e) => { this.onDragEnd(e) });
+        this.image.on('dragstart', (e) => { this.onDragStart(e) });
+        this.image.on('dragmove', (e) => { this.onDrag(e) });
+        this.image.on('dragend', (e) => { this.onDragEnd(e) });
     }
 
     onDragStart(event) {

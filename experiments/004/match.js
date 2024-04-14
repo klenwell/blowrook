@@ -1,3 +1,7 @@
+const MatchConstants = {
+    min_rook_size: 4
+}
+
 class Match {
     #stage;
     #layer;
@@ -5,7 +9,7 @@ class Match {
     constructor(selector) {
         this.selector = selector;
         this.court = undefined;
-        this.rooks = [];
+        this.newRook = undefined;
     }
 
     initStage(selector, width, height) {
@@ -22,29 +26,48 @@ class Match {
     }
 
     start() {
-        console.log('start match:', this);
-        this.render();
-    }
-
-    render() {
         const stageLength = this.court.radius * 2;
         this.#stage = this.initStage(this.selector, stageLength, stageLength);
         this.#layer = new Konva.Layer();
         this.#stage.add(this.#layer);
 
+        console.log('start match:', this);
+        this.render();
+        this.enableNewRook();
+    }
+
+    enableNewRook() {
+        this.#stage.on('pointerdown', (e) => { this.onClick(e) });
+    }
+
+    onClick() {
+        var pointerPos = this.#stage.getPointerPosition();
+        console.log('Clicked stage at', pointerPos);
+
+        if ( ! this.newRook ) {
+            let r = MatchConstants.min_rook_size;
+            let rook = new Rook(r, pointerPos.x, pointerPos.y);
+            this.addNewRook(rook);
+            console.log('Added new rook:', this.newRook);
+        }
+        else {
+            console.log('New rook already added.')
+        }
+    }
+
+    render() {
         this.#layer.add(this.court.image);
-
-        this.rooks.forEach((rook) => {
-            this.#layer.add(rook.image);
-        });
-
         this.#layer.draw();
     }
 
-    addRook(rook) {
-        this.rooks.push(rook);
+    addNewRook(rook) {
+        this.#layer.add(rook.image);
+        this.#layer.draw();
+
         rook.makeDraggable();
-        rook.image.on('dragmove', () => { this.court.constrainRook(rook) });
+        rook.image.on('dragmove', () => { this.constrainRook(rook) });
+
+        this.newRook = rook;
     }
 
     constrainRook(rook) {
