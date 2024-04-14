@@ -3,6 +3,7 @@ class Rook {
         this.radius = r;
         this.x = x;
         this.y = y;
+        this.color = 'blue';
         this.image = this.draw();
     }
 
@@ -19,11 +20,17 @@ class Rook {
             x: this.x,
             y: this.y,
             radius: this.radius,
-            fill: 'blue'
+            fill: this.color,
+            draggable: true,
+            opacity: 0.9
           });
     }
 
     makeDraggable() {
+        this.image.draggable('true');
+        rook.image.on('dragstart', (e) => { this.onDragStart(e) });
+        rook.image.on('dragmove', (e) => { this.onDrag(e) });
+        rook.image.on('dragend', (e) => { this.onDragEnd(e) });
     }
 
     onDragStart(event) {
@@ -31,12 +38,13 @@ class Rook {
     }
 
     onDrag(event) {
-        d3.select(this).attr("cx", event.x).attr("cy", event.y);
+        this.x = this.image.x();
+        this.y = this.image.y();
     }
 
     onDragEnd(event) {
-        this.x = event.x;
-        this.y = event.y;
+        this.x = this.image.x();
+        this.y = this.image.y();
         console.log('drag ended', this.pt)
     }
 }
