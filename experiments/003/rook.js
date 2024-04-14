@@ -34,7 +34,7 @@ class Rook {
     }
 
     onDragStart(event) {
-        console.log('drag started', this, event)
+        console.log('drag started', this.toJson(), event)
     }
 
     onDrag(event) {
@@ -45,6 +45,14 @@ class Rook {
     onDragEnd(event) {
         this.x = this.image.x();
         this.y = this.image.y();
-        console.log('drag ended', this.pt)
+        console.log('drag ended', this.toJson())
+    }
+
+    toJson() {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'r': this.radius
+        }
     }
 }
