@@ -33,26 +33,11 @@ class Match {
 
         console.log('start match:', this);
         this.render();
-        this.enableNewRook();
+        this.listenForNewRook();
     }
 
-    enableNewRook() {
-        this.#stage.on('pointerdown', (e) => { this.onClick(e) });
-    }
-
-    onClick() {
-        var pointerPos = this.#stage.getPointerPosition();
-        console.log('Clicked stage at', pointerPos);
-
-        if ( ! this.newRook ) {
-            let r = MatchConstants.min_rook_size;
-            let rook = new Rook(r, pointerPos.x, pointerPos.y);
-            this.addNewRook(rook);
-            console.log('Added new rook:', this.newRook);
-        }
-        else {
-            console.log('New rook already added.')
-        }
+    listenForNewRook() {
+        this.#stage.on('newRookAdded', (e) => { this.addNewRook(this.court.newRook) });
     }
 
     render() {
@@ -61,27 +46,8 @@ class Match {
     }
 
     addNewRook(rook) {
+        console.log('caught newRookAdded event');
         this.#layer.add(rook.image);
         this.#layer.draw();
-
-        rook.makeDraggable();
-        rook.image.on('dragmove', () => { this.constrainRook(rook) });
-
-        this.newRook = rook;
-    }
-
-    constrainRook(rook) {
-        const min_x = 0 + rook.radius;
-        const max_x = this.#stage.width() - rook.radius;
-        const min_y = 0 + rook.radius;
-        const max_y = this.#stage.height() - rook.radius;
-
-        let x = (rook.image.x() > max_x) ? max_x : rook.image.x();
-        x = (rook.image.x() < min_x) ? min_x : x;
-        let y = (rook.image.y() > max_x) ? max_y : rook.image.y();
-        y = (rook.image.y() < min_x) ? min_y : y;
-
-        rook.image.x(x);
-        rook.image.y(y);
     }
 }

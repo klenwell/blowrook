@@ -4,6 +4,7 @@ class Rook {
         this.x = x;
         this.y = y;
         this.color = 'blue';
+        this.state = 'new';
         this.image = this.draw();
     }
 
@@ -26,6 +27,13 @@ class Rook {
           });
     }
 
+    redraw() {
+        this.image.radius(this.radius);
+        this.image.x(this.x);
+        this.image.y(this.y);
+        this.image.draw();
+    }
+
     makeDraggable() {
         this.image.draggable('true');
         this.image.on('dragstart', (e) => { this.onDragStart(e) });
@@ -33,11 +41,19 @@ class Rook {
         this.image.on('dragend', (e) => { this.onDragEnd(e) });
     }
 
+    activate() {
+        this.state = 'active';
+        this.makeDraggable();
+    }
+
     onDragStart(event) {
         console.log('drag started', this.toJson(), event)
     }
 
     onDrag(event) {
+        if ( this.state != 'active' ) {
+            return;
+        }
         this.x = this.image.x();
         this.y = this.image.y();
     }
@@ -52,7 +68,8 @@ class Rook {
         return {
             'x': this.x,
             'y': this.y,
-            'r': this.radius
+            'r': this.radius,
+            'state': this.state
         }
     }
 }
