@@ -89,7 +89,9 @@ class Rook {
             keepRatio: true,
             enabledAnchors: [
               'top-left',
-              'bottom-right'
+              'top-right',
+              'bottom-right',
+              'bottom-left'
             ],
             rotateEnabled: false,
             boundBoxFunc: (oldBox, newBox) => { return this.bindResize(oldBox, newBox) }
@@ -101,8 +103,6 @@ class Rook {
 
     bindResize(oldBoundBox, newBoundBox) {
         // "boundBox" is an object with x, y, width, height and rotation properties
-        console.log(newBoundBox);
-
         function outOfBounds(box, stage) {
             var min_x = 0;
             var max_x = stage.width();
@@ -132,7 +132,6 @@ class Rook {
     }
 
     toggleTransformer(event) {
-        console.log('toggleTransformer', this, event.target, this.image);
         if ( ! this.isActive() ) {
             return;
         }
@@ -149,9 +148,11 @@ class Rook {
 
     endResize(event) {
         this.radius = this.radius * this.image.scaleX();
+        this.x = this.image.x()
+        this.y = this.image.y()
         this.image.scaleX(1);
         this.image.scaleY(1);
-        console.log(event, this.toJson(), this.resizeTransformer, this.image.scaleX(), this);
+        console.log('resized', this.toJson());
         this.redraw();
     }
 
