@@ -102,14 +102,24 @@ class Rook {
     }
 
     bindResize(oldBoundBox, newBoundBox) {
+        function tooSmall(box) {
+            const MIN_SIZE = 20;
+            return box.width < MIN_SIZE;
+        }
+
+        if ( tooSmall(newBoundBox) ) {
+            console.warn('Resizing too small!');
+            return oldBoundBox;
+        }
+
         // "boundBox" is an object with x, y, width, height and rotation properties
         function outOfBounds(box, stage) {
             var min_x = 0;
             var max_x = stage.width();
             var min_y = 0;
             var max_y = stage.height();
-            var bx_end = box.x + box.width;
-            var by_end = box.y + box.height;
+            var bx_end = box.x + Math.abs(box.width);
+            var by_end = box.y + Math.abs(box.height);
 
             if (
                 box.x < min_x ||
@@ -147,7 +157,7 @@ class Rook {
     }
 
     endResize(event) {
-        this.radius = this.radius * this.image.scaleX();
+        this.radius = this.radius * Math.abs(this.image.scaleX());
         this.x = this.image.x()
         this.y = this.image.y()
         this.image.scaleX(1);
