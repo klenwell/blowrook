@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blowrook Experiment 005</title>
+    <link rel="stylesheet" href="basic.css">
+  </head>
+  <body>
+    <h2 id="title">Title</h2>
+
+    <div id="court"></div>
+
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <script src="/onload.js"></script>
+    <script src="/match.js"></script>
+    <script src="/court.js"></script>
+    <script src="/rook.js"></script>
+
+    <script>
+      const match = new Match('court');
+      match.buildCourt(100)
+      match.start();
+    </script>
+  </body>
+</html>
