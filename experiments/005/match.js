@@ -21,8 +21,8 @@ class Match {
         });
     }
 
-    buildCourt(radius) {
-        this.court = new Court(radius);
+    buildCourt(radius, centerRadius) {
+        this.court = new Court(radius, centerRadius);
     }
 
     start() {

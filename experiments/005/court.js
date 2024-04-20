@@ -1,6 +1,7 @@
 class Court {
-    constructor(radius) {
+    constructor(radius, centerRadius) {
         this.radius = radius;
+        this.centerRadius = centerRadius;
         this.image = this.draw();
         this.makeClickable();
         this.makeDraggable();
@@ -8,14 +9,26 @@ class Court {
     }
 
     draw() {
-        let image = new Konva.Circle({
+        let image = new Konva.Group({
+            x: 0,
+            y: 0,
+            draggable: true
+        });
+
+        let courtImage = new Konva.Circle({
             x: this.radius,
             y: this.radius,
             radius: this.radius,
             fill: 'white',
-            stroke: 'red',
-            strokeWidth: 1,
-            draggable: true
+            stroke: '#CC0000',
+            strokeWidth: 1
+        });
+
+        let centerImage = new Konva.Circle({
+            x: this.radius,
+            y: this.radius,
+            radius: this.centerRadius,
+            fill: '#CC0000'
         });
 
         // Enable drag on court but keep the court in place.
@@ -24,6 +37,9 @@ class Court {
             var pos = image.getAbsolutePosition();
             return {x: pos.x, y: pos.y};
         });
+
+        image.add(courtImage);
+        image.add(centerImage);
 
         return image;
     }
