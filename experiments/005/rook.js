@@ -68,12 +68,14 @@ class Rook {
         }
         this.x = this.image.x();
         this.y = this.image.y();
+        this.image.fire('rookMoved', { rook: this }, true);
     }
 
     onDragEnd(event) {
         this.x = this.image.x();
         this.y = this.image.y();
-        console.log('drag ended', this.toJson())
+        console.log('drag ended', this.toJson());
+        this.image.fire('rookMoved', { rook: this }, true);
     }
 
     addTransformListener() {
@@ -82,6 +84,7 @@ class Rook {
         let resizer = new RookResizer(rook, court);
         **/
         this.image.on('click tap', (e) => { this.toggleTransformer(e) });
+        this.image.on('transform', (e) => { this.resize(e) })
         this.image.on('transformend', (e) => { this.endResize(e) });
 
         this.resizeTransformer = new Konva.Transformer({
@@ -154,6 +157,16 @@ class Rook {
             this.resizeTransformer.nodes([this.image]);
             this.resizeTransformerOn = true;
         }
+    }
+
+    resize(event) {
+        let rook = {
+            x: this.image.x(),
+            y:this.image.y(),
+            radius: this.radius * Math.abs(this.image.scaleX())
+        }
+        this.image.fire('rookMoved', { rook: rook }, true);
+        this.image.fire('rookResized', { rook: rook }, true);
     }
 
     endResize(event) {

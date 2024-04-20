@@ -107,7 +107,8 @@ class Court {
 
         this.newRook.radius = r;
         this.newRook.redraw();
-        console.log('resizeRook:', pointerPos, [dx, dy], this.newRook.toJson());
+
+        stage.fire('rookResized', { rook: this.newRook }, true);
     }
 
     activateRook(event) {
