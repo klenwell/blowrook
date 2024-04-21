@@ -113,6 +113,28 @@
       }
       return 0;
     },
+    'intersectionAreaP5': function(c1, c2) {
+      const sqrt = Math.sqrt;
+      const pow = Math.pow;
+      const sin = Math.sin;
+      const atan = Math.atan;
+
+      let distance = sqrt(pow(c2.x-c1.x, 2) + pow(c2.y-c1.y, 2));
+
+      let a = (pow(c2.r, 2) - pow(c1.r, 2) + pow(distance, 2))/(2*distance);
+      let a_edge = a+c2.r;
+      let b = (pow(c1.r, 2) - pow(c2.r, 2) + pow(distance, 2))/(2*distance);
+      let b_edge = b+c1.r;
+
+      let h = sqrt(pow(c2.r, 2) - pow(a, 2));
+      let a1 = 2 * atan(h/a_edge);
+      let a2 = 2 * atan(h/b_edge);
+
+      let segment1 = 0.5*pow(c2.r, 2)*(a1-sin(a1));
+      let segment2 = 0.5*pow(c1.r, 2)*(a2*2+sin(a2));
+
+      return segment1+segment2
+    },
     /**
      * Calculates the area of a circle
      *
@@ -183,7 +205,7 @@
     },
     /**
      * Caclulates a circle given three points
-     * 
+     *
      * @see https://www.xarg.org/2018/02/create-a-circle-out-of-three-points/
      * @param {number} p1
      * @param {number} p2
