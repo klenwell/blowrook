@@ -6,12 +6,14 @@ class BlowrookUI {
     init() {
         this.stage = this.initStage(this.app.settings.selector, this.app.court);
         this.layer = new Konva.Layer();
-        this.court = this.drawCourt(this.app.court);
+        this.court = this.app.court.draw();
         this.rook = null;
 
         this.stage.add(this.layer);
         this.layer.add(this.court);
         this.layer.draw();
+
+        this.addCourtListeners();
     }
 
     initStage(selector, court) {
@@ -23,67 +25,87 @@ class BlowrookUI {
         });
     }
 
-    drawCourt(court) {
-        let image = new Konva.Group({
-            x: 0,
-            y: 0,
-            draggable: true
-        });
+    rookInCourt(rook, court) {
 
-        let courtImage = new Konva.Circle({
-            x: court.radius,
-            y: court.radius,
-            radius: court.radius,
-            fill: 'white',
-            stroke: '#CC0000',
-            strokeWidth: 1
-        });
+    }
 
-        let centerImage = new Konva.Circle({
-            x: court.radius,
-            y: court.radius,
-            radius: court.centerRadius,
-            fill: '#CC0000'
-        });
+    /*
+     * Listeners
+    **/
+    addCourtListeners() {
+        this.court.draggable(true);
+        this.court.on('dragstart', (e) => { this.placeRook(e) });
+        this.court.on('dragmove', (e) => { this.resizeRook(e) });
+        this.court.on('dragend', (e) => { this.activateRook(e) });
+    }
 
-        // Enable drag on court but keep the court in place.
-        // https://stackoverflow.com/a/40259113/1093087
-        image.setAttr('dragBoundFunc', () => {
-            var pos = image.getAbsolutePosition();
-            return {x: pos.x, y: pos.y};
-        });
-
-        image.add(courtImage);
-        image.add(centerImage);
-
-        return image;
+    addRookListeners() {
+        this.rook.draggable(true);
+        this.rook.on('dragstart', (e) => { this.startRookDrag(e) });
+        this.rook.on('dragmove', (e) => { this.dragRook(e) });
+        this.rook.on('dragend', (e) => { this.endRookDrag(e) });
     }
 
     /*
      * Events
     **/
     placeRook(event) {
-        if ( this.rook ) {
-            console.log('rook has been placed')
-            this.court.draggable('false');
-            return;
-        }
-
         var pointerPos = this.stage.getPointerPosition();
-        console.log('Create new rook at point', pointerPos);
 
-        this.newRook = new Rook(1, pointerPos.x, pointerPos.y);
-        layer.add(this.newRook.image);
+        this.rook = new Konva.Circle({
+            x: pointerPos.x,
+            y: pointerPos.y,
+            radius: this.app.settings.minRookRadius,
+            fill: this.app.settings.userColor,
+            draggable: true,
+            opacity: 0.75
+          });
 
-        console.log('createRook:', this.newRook);
-
-    }
-
-    moveRook(event) {
-
+        this.layer.add(this.rook);
+        console.log('placeRook:', this.rook);
     }
 
     resizeRook(event) {
+        const pointerPos = this.rook.getRelativePointerPosition();
+        const rookPos = this.rook.position();
+        const courtWidth = this.court.getAttr('radius') * 2;
+
+        const dx = pointerPos.x
+        const dy = pointerPos.y;
+        const r = Math.sqrt(dx*dx + dy*dy);
+
+        function rookInCourt(r, rookPos, courtWidth) {
+            const min_x = 0 + r;
+            const max_x = courtWidth - r;
+            const min_y = 0 + r;
+            const max_y = courtWidth - r;
+
+            if ( rookPos.x < min_x || rookPos.x > max_x ) {
+                return false;
+            }
+
+            if ( rookPos.y < min_y || rookPos.y > max_y ) {
+                return false;
+            }
+
+            return true;
+        }
+
+        if ( ! rookInCourt(r, rookPos, courtWidth) ) {
+            console.warn('Out of Bounds. Stop!');
+            return false;
+        }
+
+        this.rook.radius(r);
+    }
+
+    activateRook(event) {
+        this.rook.on('dragmove', (e) => { this.constrainRook(this.newRook); });
+        this.addRookListeners();
+        this.court.draggable(false);
+    }
+
+    moveRook(event) {
 
     }
 }

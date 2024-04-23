@@ -1,8 +1,9 @@
 const AppSettings = {
     selector: 'app',
-    minRookSize: 10,
+    minRookRadius: 10,
     courtRadius: 100,
-    centerRadius: 33
+    centerRadius: 33,
+    userColor: 'blue'
 };
 
 class BlowrookApp {
