@@ -8,6 +8,8 @@ class BlowrookUI {
         this.layer = new Konva.Layer();
         this.court = this.app.court.draw();
         this.rook = null;
+        this.rookTransformer = null;
+        this.rookTransformerOn = false;
 
         this.stage.add(this.layer);
         this.layer.add(this.court);
@@ -35,15 +37,74 @@ class BlowrookUI {
     addCourtListeners() {
         this.court.draggable(true);
         this.court.on('dragstart', (e) => { this.placeRook(e) });
-        this.court.on('dragmove', (e) => { this.resizeRook(e) });
+        this.court.on('dragmove', (e) => { this.stretchRook(e) });
         this.court.on('dragend', (e) => { this.activateRook(e) });
     }
 
     addRookListeners() {
+        // Make rook moveable
         this.rook.draggable(true);
         this.rook.on('dragstart', (e) => { this.startRookDrag(e) });
         this.rook.on('dragmove', (e) => { this.dragRook(e) });
         this.rook.on('dragend', (e) => { this.endRookDrag(e) });
+
+        // Make rook resizeable
+        this.addRookTransformer();
+        this.rook.on('click tap', (e) => { this.toggleRookResizer(e) });
+        this.rook.on('transform', (e) => { this.resizeRook(e) })
+        this.rook.on('transformend', (e) => { this.endRookResize(e) });
+    }
+
+    addRookTransformer() {
+        this.rookTransformer = new Konva.Transformer({
+            nodes: [],
+            keepRatio: true,
+            enabledAnchors: [
+              'top-left',
+              'top-right',
+              'bottom-right',
+              'bottom-left'
+            ],
+            rotateEnabled: false,
+            boundBoxFunc: (oldBox, newBox) => { return this.bindRookResize(oldBox, newBox) }
+        });
+
+        this.layer.add(this.rookTransformer);
+    }
+
+    bindRookResize(oldBoundBox, newBoundBox) {
+        const courtLength = this.court.getAttr('radius') * 2;
+
+        if ( oldBoundBox.width < this.app.settings.minRookRadius ) {
+            console.warn('Resizing too small!');
+            return oldBoundBox;
+        }
+
+        // "boundBox" is an object with x, y, width, height and rotation properties
+        function outOfBounds(box, courtLength) {
+            var min_d = 0;
+            var max_d = courtLength;
+            var bx_end = box.x + Math.abs(box.width);
+            var by_end = box.y + Math.abs(box.height);
+
+            if (
+                box.x < min_d ||
+                bx_end > max_d ||
+                box.y < min_d ||
+                by_end > max_d
+            ) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if ( outOfBounds(newBoundBox, courtLength) ) {
+            console.warn('Resizing out of bounds!');
+            return oldBoundBox;
+        }
+
+        return newBoundBox;
     }
 
     /*
@@ -65,33 +126,19 @@ class BlowrookUI {
         console.log('placeRook:', this.rook);
     }
 
-    resizeRook(event) {
+    stretchRook(event) {
         const pointerPos = this.rook.getRelativePointerPosition();
-        const rookPos = this.rook.position();
-        const courtWidth = this.court.getAttr('radius') * 2;
-
         const dx = pointerPos.x
         const dy = pointerPos.y;
         const r = Math.sqrt(dx*dx + dy*dy);
 
-        function rookInCourt(r, rookPos, courtWidth) {
-            const min_x = 0 + r;
-            const max_x = courtWidth - r;
-            const min_y = 0 + r;
-            const max_y = courtWidth - r;
+        let rook = {
+            x: this.rook.x(),
+            y: this.rook.y(),
+            r: r
+        };
 
-            if ( rookPos.x < min_x || rookPos.x > max_x ) {
-                return false;
-            }
-
-            if ( rookPos.y < min_y || rookPos.y > max_y ) {
-                return false;
-            }
-
-            return true;
-        }
-
-        if ( ! rookInCourt(r, rookPos, courtWidth) ) {
+        if ( ! this.app.court.rookInBounds(rook) ) {
             console.warn('Out of Bounds. Stop!');
             return false;
         }
@@ -109,20 +156,14 @@ class BlowrookUI {
     }
 
     dragRook(event) {
-        const rookPos = this.rook.position();
-        const rookRadius = this.rook.getAttr('radius');
+        let rook = this.scaleRook(this.rook)
+        const min_d = 0 + rook.r;
+        const max_d = this.app.court.length - rook.r;
 
-        // Outer ring of court is first child in group
-        const court = this.court.children[0];
-        const courtWidth = court.width();
-
-        const min_d = 0 + rookRadius;
-        const max_d = courtWidth - rookRadius;
-
-        let x = (rookPos.x > max_d) ? max_d : rookPos.x;
-        x = (rookPos.x < min_d) ? min_d : x;
-        let y = (rookPos.y > max_d) ? max_d : rookPos.y;
-        y = (rookPos.y < min_d) ? min_d : y;
+        let x = (rook.x > max_d) ? max_d : rook.x;
+        x = (rook.x < min_d) ? min_d : x;
+        let y = (rook.y > max_d) ? max_d : rook.y;
+        y = (rook.y < min_d) ? min_d : y;
 
         this.rook.x(x);
         this.rook.y(y);
@@ -132,7 +173,40 @@ class BlowrookUI {
         console.log(event, this.debugRook(this.rook));
     }
 
+    toggleRookResizer(event) {
+        if ( this.rookTransformerOn ) {
+            this.rookTransformer.nodes([]);
+            this.rookTransformerOn = false;
+        }
+        else {
+            this.rookTransformer.nodes([this.rook]);
+            this.rookTransformerOn = true;
+        }
+    }
+
+    resizeRook(event) {
+        console.log(event, this.debugRook(this.rook), this.scaleRook(this.rook));
+    }
+
+    endRookResize(event) {
+        console.log(event, this.debugRook(this.rook), this.scaleRook(this.rook));
+    }
+
+    /*
+     * Utility methods
+    **/
+    scaleRook(rook) {
+        let scale = Math.abs(rook.scaleX());
+        let radius = rook.getAttr('radius');
+
+        return {
+            x: rook.x(),
+            y: rook.y(),
+            r: radius * scale
+        }
+    }
+
     debugRook(rook) {
-        return {x: rook.x(), y: rook.y(), r: rook.getAttr('radius')}
+        return { x: rook.x(), y: rook.y(), r: rook.getAttr('radius') }
     }
 }

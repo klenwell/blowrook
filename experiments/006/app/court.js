@@ -3,6 +3,22 @@ class Court {
         this.app = app;
         this.radius = app.settings.courtRadius;
         this.centerRadius = app.settings.centerRadius;
+        this.length = this.radius * 2;
+    }
+
+    rookInBounds(rook) {
+        const min_d = 0 + rook.r;
+        const max_d = this.length - rook.r;
+
+        if ( rook.x < min_d || rook.x > max_d ) {
+            return false;
+        }
+
+        if ( rook.y < min_d || rook.y > max_d ) {
+            return false;
+        }
+
+        return true;
     }
 
     draw() {
