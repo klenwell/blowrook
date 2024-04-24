@@ -100,12 +100,39 @@ class BlowrookUI {
     }
 
     activateRook(event) {
-        this.rook.on('dragmove', (e) => { this.constrainRook(this.newRook); });
         this.addRookListeners();
         this.court.draggable(false);
     }
 
-    moveRook(event) {
+    startRookDrag(event) {
+        console.log(event, this.debugRook(this.rook));
+    }
 
+    dragRook(event) {
+        const rookPos = this.rook.position();
+        const rookRadius = this.rook.getAttr('radius');
+
+        // Outer ring of court is first child in group
+        const court = this.court.children[0];
+        const courtWidth = court.width();
+
+        const min_d = 0 + rookRadius;
+        const max_d = courtWidth - rookRadius;
+
+        let x = (rookPos.x > max_d) ? max_d : rookPos.x;
+        x = (rookPos.x < min_d) ? min_d : x;
+        let y = (rookPos.y > max_d) ? max_d : rookPos.y;
+        y = (rookPos.y < min_d) ? min_d : y;
+
+        this.rook.x(x);
+        this.rook.y(y);
+    }
+
+    endRookDrag(event) {
+        console.log(event, this.debugRook(this.rook));
+    }
+
+    debugRook(rook) {
+        return {x: rook.x(), y: rook.y(), r: rook.getAttr('radius')}
     }
 }
