@@ -73,9 +73,10 @@ class BlowrookUI {
     }
 
     bindRookResize(oldBoundBox, newBoundBox) {
-        const courtLength = this.court.getAttr('radius') * 2;
+        const courtLength = this.app.court.length;
+        const minBoxSize = this.app.settings.minRookRadius * 2;
 
-        if ( oldBoundBox.width < this.app.settings.minRookRadius ) {
+        if ( newBoundBox.width < minBoxSize ) {
             console.warn('Resizing too small!');
             return oldBoundBox;
         }
