@@ -15,7 +15,11 @@ class BlowrookUI {
         this.layer.add(this.court);
         this.layer.draw();
 
+        this.button = $('#move');
+        this.button.hide();
+
         this.addCourtListeners();
+        this.addButtonListener();
     }
 
     initStage(selector, court) {
@@ -39,6 +43,10 @@ class BlowrookUI {
         this.court.on('dragstart', (e) => { this.placeRook(e) });
         this.court.on('dragmove', (e) => { this.stretchRook(e) });
         this.court.on('dragend', (e) => { this.activateRook(e) });
+    }
+
+    addButtonListener(event) {
+        this.button.on('click', (e) => { this.postMove(e) });
     }
 
     addRookListeners() {
@@ -149,6 +157,7 @@ class BlowrookUI {
 
     activateRook(event) {
         this.addRookListeners();
+        this.button.show();
         this.court.draggable(false);
     }
 
@@ -191,6 +200,17 @@ class BlowrookUI {
 
     endRookResize(event) {
         console.log(event, this.debugRook(this.rook), this.scaleRook(this.rook));
+    }
+
+    postMove(event) {
+        console.log(event);
+
+        if ( ! this.rook ) {
+            alert('You need to place your rook!');
+            return;
+        }
+
+        console.log('Submit move:', this.scaleRook(this.rook));
     }
 
     /*
