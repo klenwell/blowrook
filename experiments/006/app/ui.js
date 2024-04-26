@@ -210,7 +210,9 @@ class BlowrookUI {
             return;
         }
 
-        console.log('Submit move:', this.scaleRook(this.rook));
+        let minRook = this.scaleRook(this.rook)
+        let response = this.app.apiClient.postMove(minRook);
+        this.app.match.update(response);
     }
 
     /*
