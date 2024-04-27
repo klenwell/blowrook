@@ -21,6 +21,4 @@ class BlowrookApp {
         const matchData = this.apiClient.getMatch({ 'match_code': 'experiment' });
         this.match.start(matchData);
     }
-
-
 }

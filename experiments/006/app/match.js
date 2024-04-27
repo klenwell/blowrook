@@ -4,8 +4,9 @@ class BlowrookMatch {
     }
 
     start(matchData) {
+        this.id = matchData.match_id;
         this.round = 1;
-        console.log('start match');
+        console.log('BlowrookMatch.start', this);
     }
 
     update(data) {

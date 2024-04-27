@@ -1,4 +1,12 @@
 class MatchModel {
+    static loadById(id) {
+        let matchData = sessionStorage.getItem(id);
+        let data = JSON.parse(matchData);
+        let match = new MatchModel(id);
+        console.log(data, match);
+        return match;
+    }
+
     constructor(uuid) {
         this.court = new CourtModel();
         this.id = uuid;
@@ -11,7 +19,7 @@ class MatchModel {
     }
 
     save() {
-        sessionStorage.setItem('match', this.stringify());
+        sessionStorage.setItem(this.id, this.stringify());
     }
 
     addMove(params) {
@@ -56,11 +64,5 @@ class MatchModel {
             round: this.round
         }
         return JSON.stringify(jsonData);
-    }
-
-    destringify(stringifiedData) {
-        let data = JSON.parse(stringifiedData);
-        console.log(data);
-        return data;
     }
 }

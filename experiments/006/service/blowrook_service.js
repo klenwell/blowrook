@@ -4,8 +4,8 @@ class BlowrookService {
         let service = new BlowrookService()
 
         let routes = {
-            '/blowrook/match?code=ID': () => { service.getMatch(params) },
-            '/blowrook/match/ID/move': () => { service.postMove(params) },
+            '/blowrook/match?code=ID': () => { return service.getMatch(params) },
+            '/blowrook/match/ID/move': () => { return service.postMove(params) },
         }
 
         let action = routes[path];
@@ -23,15 +23,14 @@ class BlowrookService {
         match.save();
 
         return {
-            match_id: match.uuid,
+            match_id: match.id,
             state: match.state
         };
     }
 
     postMove(params) {
         // get match
-        let matchData = sessionStorage.getItem('match');
-        let match = MatchModel.destringify(matchData);
+        let match = MatchModel.loadById(params['match_id']);
 
         // sim computer move
         let ai = new BlowrookAI();
