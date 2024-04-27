@@ -1,28 +1,52 @@
 class BlowrookService {
-    static accept(path, params) {
-        console.log('BlowrookService.accept', path, params);
+    static route(path, params) {
+        console.log('BlowrookService.route', path, params);
         let service = new BlowrookService()
 
         let routes = {
-            '/blowrook/match/ID/move': service.postMove(params),
+            '/blowrook/match?code=ID': () => { service.getMatch(params) },
+            '/blowrook/match/ID/move': () => { service.postMove(params) },
         }
 
-        let response = routes[path]
-        console.log('response', response);
+        let action = routes[path];
+        let response = action();
+        console.log('BlowrookService.route response', response);
         return response;
       }
 
     constructor() {
     }
 
+    getMatch(params) {
+        let match = new MatchModel('exp006');
+        match.state = 'matched';
+        match.save();
+
+        return {
+            match_id: match.uuid,
+            state: match.state
+        };
+    }
+
     postMove(params) {
-        // get match state
+        // get match
+        let matchData = sessionStorage.getItem('match');
+        let match = MatchModel.destringify(matchData);
+
         // sim computer move
+        let ai = new BlowrookAI();
+        let aiParams = ai.move(match)
+
         // update board
+        match.addMove(params);
+        match.addMove(aiParams);
+        match.scoreRound();
+
         // return match state
         return {
-            round: 2,
-            score: 'TBA'
+            match: match.state,
+            params: params,
+            aiParams: aiParams
         }
     }
 }
