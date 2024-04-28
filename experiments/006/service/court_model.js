@@ -19,8 +19,8 @@ class CourtModel {
 
     get innerCircle() {
         return {
-            x: this.innerRadius,
-            y: this.innerRadius,
+            x: this.outerRadius,
+            y: this.outerRadius,
             r: this.innerRadius
         }
     }

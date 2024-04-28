@@ -32,20 +32,23 @@ class BlowrookService {
         // get match
         let match = MatchModel.loadById(params['match_id']);
 
+        // user move
+        let userMove = new RookMove(params['rook'], params['user_id']);
+
         // sim computer move
         let ai = new BlowrookAI();
-        let aiParams = ai.move(match)
+        let aiMove = ai.move(match)
 
         // update board
-        match.addMove(params);
-        match.addMove(aiParams);
+        match.addMove(userMove);
+        match.addMove(aiMove);
         match.scoreRound();
 
         // return match state
         return {
             match: match.state,
-            params: params,
-            aiParams: aiParams
+            user_move: userMove,
+            ai_move: aiMove
         }
     }
 }

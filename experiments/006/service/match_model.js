@@ -22,8 +22,8 @@ class MatchModel {
         sessionStorage.setItem(this.id, this.stringify());
     }
 
-    addMove(params) {
-        let rookMove = new RookMove(params);
+    addMove(rookMove) {
+        console.log('addMove', rookMove);
         this.moves.push(rookMove);
     }
 
@@ -35,27 +35,31 @@ class MatchModel {
         let smallRook = sortedRooks[0];
         let bigRook = sortedRooks[1];
 
+        // Compute Raw Scores
+        smallRook.potentialScore = this.scoreRookMove(smallRook);
+        bigRook.potentialScore = this.scoreRookMove(bigRook);
+
         // Check overlaps. If overlap, remove largest.
-        if ( circle.intersect(smallRook.circle, bigRook.circle) ) {
+        if ( Circle.intersect(smallRook.circle, bigRook.circle) ) {
             bigRook.score = 0;
         }
-        else {
-            bigRook.score = this.scoreRookMove(bigRook);
-        }
 
-        smallRook.score = this.scoreRookMove(smallRook);
+        smallRook.score = smallRook.potentialScore;
 
        // Return scores
-       scores[smallRook.owner] = smallRook;
-       scores[bigRook.owner] = bigRook;
+       scores[smallRook.ownerId] = smallRook;
+       scores[bigRook.ownerId] = bigRook;
        this.rounds.push(scores);
+       console.log('scoreRound', scores, this.rounds);
        return scores;
     }
 
     scoreRookMove(rookMove) {
-        let courtArea = circle.intersectionArea(rookMove.circle, this.court.outerCircle);
-        let bonusArea = circle.intersectionArea(rookMove.circle, this.court.innerCircle);
-        return courtArea + (bonusArea * 3);
+        let courtArea = Circle.intersectionArea(rookMove.circle, this.court.outerCircle);
+        let bonusArea = Circle.intersectionArea(rookMove.circle, this.court.innerCircle);
+        let rawScore = courtArea + (bonusArea * 3);
+        console.log('scoreRookMove:', courtArea, bonusArea, rawScore);
+        return Math.round(rawScore / 100);
     }
 
     stringify() {
