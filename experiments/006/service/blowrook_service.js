@@ -46,7 +46,7 @@ class BlowrookService {
 
         // return match state
         return {
-            match: match.state,
+            match: match.jsonData,
             user_move: userMove,
             ai_move: aiMove
         }

@@ -1,21 +1,39 @@
 class MatchModel {
     static loadById(id) {
         let matchData = sessionStorage.getItem(id);
-        let data = JSON.parse(matchData);
         let match = new MatchModel(id);
-        console.log(data, match);
+        match.loadData(matchData);
+        console.log('loadById', id, match);
         return match;
     }
 
     constructor(uuid) {
-        this.court = new CourtModel();
         this.id = uuid;
+        this.state = 'new';
         this.rounds = [];
-        this.moves = []
+        this.moves = [];
+        this.court = new CourtModel();
     }
 
     get round() {
         return this.rounds.length - 1;
+    }
+
+    get jsonData() {
+        return {
+            id: this.uid,
+            state: this.state,
+            round: this.round,
+            rounds: this.rounds,
+            moves: this.moves
+        }
+    }
+
+    loadData(serialData) {
+        let jsonData = JSON.parse(serialData);
+        this.state = jsonData.state;
+        this.rounds = jsonData.rounds;
+        this.moves = jsonData.moves;
     }
 
     save() {
@@ -46,12 +64,12 @@ class MatchModel {
 
         smallRook.score = smallRook.potentialScore;
 
-       // Return scores
-       scores[smallRook.ownerId] = smallRook;
-       scores[bigRook.ownerId] = bigRook;
-       this.rounds.push(scores);
-       console.log('scoreRound', scores, this.rounds);
-       return scores;
+        // Return scores
+        scores[smallRook.ownerId] = smallRook;
+        scores[bigRook.ownerId] = bigRook;
+        this.rounds.push(scores);
+        console.log('scoreRound', scores, this.rounds);
+        return scores;
     }
 
     scoreRookMove(rookMove) {
@@ -63,10 +81,6 @@ class MatchModel {
     }
 
     stringify() {
-        let jsonData = {
-            id: this.id,
-            round: this.round
-        }
-        return JSON.stringify(jsonData);
+        return JSON.stringify(this.jsonData);
     }
 }
