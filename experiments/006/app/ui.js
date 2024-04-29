@@ -61,9 +61,6 @@ class BlowrookUI {
         else {
             console.log('Tie', userScore, opponentScore)
         }
-
-
-
     }
 
     /*
