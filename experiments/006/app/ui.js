@@ -31,7 +31,38 @@ class BlowrookUI {
         });
     }
 
-    rookInCourt(rook, court) {
+    updateResult(resultData) {
+        let opponentMove = resultData.ai_move;
+        let userMove = resultData.user_move;
+        let opponentScore = opponentMove.score;
+        let userScore = userMove.score;
+
+        let opponentRook = new Konva.Circle({
+            x: opponentMove.x,
+            y: opponentMove.y,
+            radius: opponentMove.r,
+            fill: this.app.settings.aiColor,
+            draggable: false,
+            opacity: 0.75
+        });
+
+        this.layer.add(opponentRook);
+
+        this.rook.draggable(false);
+
+        if ( userScore > opponentScore ) {
+            console.log('You win:', userScore, opponentScore)
+            opponentRook.opacity(.33);
+        }
+        else if ( userScore < opponentScore ) {
+            console.log('You lose:', userScore, opponentScore);
+            this.rook.opacity(.33);
+        }
+        else {
+            console.log('Tie', userScore, opponentScore)
+        }
+
+
 
     }
 

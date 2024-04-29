@@ -61,6 +61,9 @@ class MatchModel {
         if ( Circle.intersect(smallRook.circle, bigRook.circle) ) {
             bigRook.score = 0;
         }
+        else {
+            bigRook.score = bigRook.potentialScore;
+        }
 
         smallRook.score = smallRook.potentialScore;
 

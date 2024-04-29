@@ -13,15 +13,7 @@ class BlowrookMatch {
         console.log(data);
         this.aiMove = data.ai_move;
         this.userMove = data.user_move;
-
-        if ( this.userMove.score > this.aiMove.score ) {
-            console.log('You win:', this.userMove.score, this.aiMove.score)
-        }
-        else if ( this.userMove.score < this.aiMove.score ) {
-            console.log('You lose:', this.userMove.score, this.aiMove.score)
-        }
-        else {
-            console.log('Tie', this.userMove.score, this.aiMove.score)
-        }
+        this.app.ui.updateResult(data);
     }
+
 }

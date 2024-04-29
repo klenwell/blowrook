@@ -6,7 +6,7 @@ class BlowrookAI {
     move(match) {
         console.log('BlowrookAI.move', match);
         let minRadius = 16;
-        let maxRadius = Math.round(match.court.outerRadius * 1.5);
+        let maxRadius = Math.round(match.court.outerRadius * .9);
 
         let radius = this.randInt(minRadius, maxRadius);
         let minP = 1 + radius;
