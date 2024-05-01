@@ -1,82 +1,117 @@
-/*
- * https://math.stackexchange.com/a/290526
-**/
-function stackExchangeArea(c1, c2) {
-    // Not overlapping
-    var d = Math.hypot(c2['x'] - c1['x'], c2['y'] - c1['y']);
-    if (d > c1['r'] + c2['r']) {
-        return 0;
-    }
+function circleOverlaps(circle1, circle2) {
+    const { x: x1, y: y1, r: r1 } = circle1;
+    const { x: x2, y: y2, r: r2 } = circle2;
+    const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return d < r1 + r2
+}
 
-    // Totally overlapping
-    if (d <= Math.abs(c2['r'] - c1['r'])) {
-        var r1 = c1['r'] * c1['r'];
-        var r2 = c2['r'] * c2['r'];
-        return Math.PI * Math.min(r1, r2);
-    }
 
-    // https://math.stackexchange.com/a/290526
-    var x0 = c1.x;
-    var y0 = c1.y;
-    var r0 = c1.r;
-    var x1 = c2.x;
-    var y1 = c2.y;
-    var r1 = c2.r;
-
-    var rr0 = r0*r0;
-    var rr1 = r1*r1;
-    var c = Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0));
-    var phi = (Math.acos((rr0+(c*c)-rr1) / (2*r0*c)))*2;
-    var theta = (Math.acos((rr1+(c*c)-rr0) / (2*r1*c)))*2;
-    var area1 = 0.5*theta*rr1 - 0.5*rr1*Math.sin(theta);
-    var area2 = 0.5*phi*rr0 - 0.5*rr0*Math.sin(phi);
-    return area1 + area2;
+function circleContainsCircle(circle1, circle2) {
+    const { x: x1, y: y1, r: r1 } = circle1;
+    const { x: x2, y: y2, r: r2 } = circle2;
+    const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return d <= Math.abs(r1 - r2)
 }
 
 
 /*
- * https://editor.p5js.org/Lathryx/sketches/y2PRqXmBf
+ * https://math.stackexchange.com/a/290526
 **/
-function p5SketchArea(c1, c2) {
-    const sqrt = Math.sqrt;
-    const pow = Math.pow;
-    const sin = Math.sin;
-    const atan = Math.atan;
+function stackOverlapArea(circle1, circle2) {
+    const x0 = circle1.x, y0 = circle1.y, r0 = circle1.r;
+    const x1 = circle2.x, y1 = circle2.y, r1 = circle2.r;
 
-    // Not overlapping
-    var d = Math.hypot(c2['x'] - c1['x'], c2['y'] - c1['y']);
-
-
-    // Totally overlapping
-    if (d <= Math.abs(c2['r'] - c1['r'])) {
-        var r1 = c1['r'] * c1['r'];
-        var r2 = c2['r'] * c2['r'];
-        return Math.PI * Math.min(r1, r2);
-    }
-
-    let distance = sqrt(pow(c2.x-c1.x, 2) + pow(c2.y-c1.y, 2));
-
-    if (distance > c1.r + c2.r) {
+    if ( ! circleOverlaps(circle1, circle2) ) {
         return 0;
     }
 
-    if (distance <= Math.abs(c2.r - c1.r)) {
-        var r1 = c1.r * c1.r;
-        var r2 = c2.r * c2.r;
-        return Math.PI * Math.min(r1, r2);
+    if ( ! circleContainsCircle(circle1, circle2) ) {
+        const rMin = Math.min(r0, r1);
+        return Math.PI * rMin * rMin; // Area of the smaller circle
     }
 
-    let a = (pow(c2.r, 2) - pow(c1.r, 2) + pow(distance, 2))/(2*distance);
-    let a_edge = a+c2.r;
-    let b = (pow(c1.r, 2) - pow(c2.r, 2) + pow(distance, 2))/(2*distance);
-    let b_edge = b+c1.r;
+    const rr0 = r0*r0;
+    const rr1 = r1*r1;
+    const c = Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0));
+    const phi = (Math.acos((rr0+(c*c)-rr1) / (2*r0*c)))*2;
+    const theta = (Math.acos((rr1+(c*c)-rr0) / (2*r1*c)))*2;
+    const area1 = 0.5*theta*rr1 - 0.5*rr1*Math.sin(theta);
+    const area2 = 0.5*phi*rr0 - 0.5*rr0*Math.sin(phi);
+    return area1 + area2;
+}
 
-    let h = sqrt(pow(c2.r, 2) - pow(a, 2));
-    let a1 = 2 * atan(h/a_edge);
-    let a2 = 2 * atan(h/b_edge);
 
-    let segment1 = 0.5*pow(c2.r, 2)*(a1-sin(a1));
-    let segment2 = 0.5*pow(c1.r, 2)*(a2*2+sin(a2));
+/**
+ * Source https://chat.lmsys.org/
+ *
+ */
+function circleOverlapAreaChatA(circle1, circle2) {
+    const x0 = circle1.x, y0 = circle1.y, r0 = circle1.r;
+    const x1 = circle2.x, y1 = circle2.y, r1 = circle2.r;
 
-    return segment1+segment2;
+    // Calculate the distance between the centers of the two circles
+    const d = Math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2);
+
+    // Check if the circles overlap
+    if (d >= (r0 + r1)) {
+        // No overlap
+        return 0;
+    }
+    if (d <= Math.abs(r0 - r1) && r0 >= r1) {
+        // Circle2 is completely inside Circle1
+        return Math.PI * r1 * r1;
+    }
+    if (d <= Math.abs(r0 - r1) && r0 < r1) {
+        // Circle1 is completely inside Circle2
+        return Math.PI * r0 * r0;
+    }
+
+    // Calculate the overlap area
+    const r0Sq = r0 * r0;
+    const r1Sq = r1 * r1;
+
+    const cosTheta0 = (r0Sq + d * d - r1Sq) / (2 * r0 * d);
+    const cosTheta1 = (r1Sq + d * d - r0Sq) / (2 * r1 * d);
+
+    const theta0 = Math.acos(cosTheta0) * 2;
+    const theta1 = Math.acos(cosTheta1) * 2;
+
+    const area0 = 0.5 * theta0 * r0Sq - 0.5 * r0Sq * Math.sin(theta0);
+    const area1 = 0.5 * theta1 * r1Sq - 0.5 * r1Sq * Math.sin(theta1);
+
+    return area0 + area1;
+}
+
+/**
+ * Source https://chat.lmsys.org/
+ */
+function circleOverlapAreaChatB(circle1, circle2) {
+    const { x: x1, y: y1, r: r1 } = circle1;
+    const { x: x2, y: y2, r: r2 } = circle2;
+
+    // Distance between the centers
+    const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+    // Check if circles are separate
+    if (d >= r1 + r2) {
+        return 0;
+    }
+
+    // Check if one circle is within the other
+    if (d <= Math.abs(r1 - r2)) {
+        const rMin = Math.min(r1, r2);
+        return Math.PI * rMin * rMin; // Area of the smaller circle
+    }
+
+    // Calculate overlap area
+    const r1Sq = r1 * r1;
+    const r2Sq = r2 * r2;
+    const cos1 = (d * d + r1Sq - r2Sq) / (2 * d * r1);
+    const cos2 = (d * d + r2Sq - r1Sq) / (2 * d * r2);
+    const term1 = r1Sq * Math.acos(cos1);
+    const term2 = r2Sq * Math.acos(cos2);
+    const term3 = 0.5 * Math.sqrt((-d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (d + r1 + r2));
+
+    const overlapArea = term1 + term2 - term3;
+    return overlapArea;
 }
