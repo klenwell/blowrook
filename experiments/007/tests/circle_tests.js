@@ -21,7 +21,6 @@ const PRECISION = 0.001
 
 QUnit.module('When rook overlaps outer court', function() {
     const expectedResult = 8399.684;
-    console.log(Circle.area(testRook));
 
     QUnit.test('stackOverlapArea', function(assert) {
         assert.close(stackOverlapArea(testRook, outerCourt), expectedResult, PRECISION);

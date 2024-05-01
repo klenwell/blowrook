@@ -25,7 +25,7 @@ function stackOverlapArea(circle1, circle2) {
         return 0;
     }
 
-    if ( ! circleContainsCircle(circle1, circle2) ) {
+    if ( circleContainsCircle(circle1, circle2) ) {
         const rMin = Math.min(r0, r1);
         return Math.PI * rMin * rMin; // Area of the smaller circle
     }
