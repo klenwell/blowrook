@@ -1,6 +1,5 @@
 // See circle_tests.js for constants
 
-
 QUnit.module('compare overlap area methods', hooks => {
     const circleJsMethod = (c1, c2) => { return Math.round(Circle.intersectionArea(c1, c2)); }
     const stackMethod = (c1, c2) => { return Math.round(stackExchangeArea(c1, c2)); }
