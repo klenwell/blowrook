@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blowrook Experiment 008</title>
+    <link rel="stylesheet" href="basic.css">
+  </head>
+  <body>
+    <h2 id="title">Blowrook Experiment 008</h2>
+
+    <div id="app">
+      <div id="menu">
+        <h3>Menu</h3>
+      </div>
+      <div id="match">
+        <h3>Match</h3>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="./blowrook.js"></script>
+
+    <script>
+      const app = new BlowrookApp();
+      app.run();
+    </script>
+  </body>
+</html>
