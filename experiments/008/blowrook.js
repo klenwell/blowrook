@@ -23,7 +23,16 @@ const AppStates = {
 
 class BlowrookApp {
     constructor() {
+        this.ui = this.initUI();
         this.initStates(AppStates, 'home');
+        this.ui.match.hide();
+    }
+
+    initUI() {
+        return {
+            home: new HomeUI(this),
+            match: new MatchUI(this)
+        };
     }
 
     run() {
