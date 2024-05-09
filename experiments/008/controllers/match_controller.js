@@ -1,4 +1,4 @@
-MatchStates = {
+const MatchStates = {
     up: {
         enter: (controller) => {
             console.log('TODO: make match up');
@@ -21,8 +21,8 @@ MatchStates = {
             }
 
             controller.match.round += 1;
-            controller.changeState('nextRound');
-            //let roundController = new MatchRoundController(controller);
+            let roundController = new RoundController(controller);
+            roundController.changeState('move');
         }
     },
 
@@ -38,7 +38,8 @@ class MatchController {
     constructor(app) {
         this.app = app;
         this.match = new Match();
-        this.initStates(MatchStates, 'up');
+        this.view = new MatchView();
+        this.initStates(MatchStates);
     }
 }
 

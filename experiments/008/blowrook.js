@@ -13,6 +13,7 @@ const AppStates = {
         enter: (app) => {
             app.ui.match.show();
             app.controller = new MatchController(app);
+            app.controller.changeState('up');
         },
 
         exit: (app) => {
@@ -26,7 +27,7 @@ const AppStates = {
 class BlowrookApp {
     constructor() {
         this.ui = this.initUI();
-        this.initStates(AppStates, 'home');
+        this.initStates(AppStates);
         this.ui.match.hide();
         this.controller = null;
     }
@@ -39,7 +40,8 @@ class BlowrookApp {
     }
 
     run() {
-        console.log('BlowrookApp#run')
+        console.log('BlowrookApp#run');
+        this.changeState('home');
     }
 }
 

@@ -13,6 +13,14 @@
 **/
 let MinStateMachineMixin = {
     initStates(states, initState) {
+        if ( ! initState ) {
+            initState = 'init';
+        }
+
+        if ( ! states.init ) {
+            states.init = {};
+        }
+
         this.states = states;
         this.enterNewState(initState);
         console.debug('init MinStateMachineMixin with state:', this.state);
