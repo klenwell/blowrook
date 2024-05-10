@@ -1,15 +1,13 @@
 const MatchStates = {
     up: {
         enter: (controller) => {
-            console.log('TODO: make match up');
-            setTimeout(() => {
-                controller.changeState('on');
-            }, 2000);
+            controller.view.initPlayerForm();
         }
     },
 
     on: {
         enter: (controller) => {
+            throw 'TODO';
             controller.changeState('nextRound');
         }
     },
@@ -38,8 +36,13 @@ class MatchController {
     constructor(app) {
         this.app = app;
         this.match = new Match();
-        this.view = new MatchView();
+        this.view = new MatchView(this);
         this.initStates(MatchStates);
+    }
+
+    postName(params) {
+        this.match.savePlayer(params.name);
+        this.changeState('on');
     }
 }
 
