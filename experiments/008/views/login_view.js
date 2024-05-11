@@ -26,5 +26,4 @@ class LoginView {
             app.postName(params);
         });
     }
-
 }

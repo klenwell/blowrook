@@ -12,11 +12,12 @@ const AppStates = {
 
     home: {
         enter: (app) => {
-            $('#home-view').show();
+            app.view = new HomeView(app);
+            app.view.show();
         },
 
         exit: (app) => {
-            $('#home-view').hide();
+            app.view.hide();
         }
     },
 
@@ -33,14 +34,13 @@ const AppStates = {
 
     match: {
         enter: (app) => {
-            app.ui.match.show();
             app.controller = new MatchController(app);
             app.controller.changeState('up');
         },
 
         exit: (app) => {
+            app.controller.view.hide();
             app.controller = null;
-            app.ui.match.hide();
         }
     }
 
@@ -61,6 +61,15 @@ class BlowrookApp {
     postName(params) {
         this.user = params.name;
         this.changeState('home');
+    }
+
+    getMatch() {
+        this.changeState('match');
+    }
+
+    postLogout() {
+        this.user = null;
+        this.changeState('login');
     }
 }
 
