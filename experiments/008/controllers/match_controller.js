@@ -39,11 +39,6 @@ class MatchController {
         this.view = new MatchView(this);
         this.initStates(MatchStates);
     }
-
-    postName(params) {
-        this.match.savePlayer(params.name);
-        this.changeState('on');
-    }
 }
 
 Object.assign(MatchController.prototype, MinStateMachineMixin);

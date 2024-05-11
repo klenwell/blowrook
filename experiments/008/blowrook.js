@@ -1,11 +1,33 @@
 const AppStates = {
+    init: {
+        enter: (app) => {
+            if ( app.user ) {
+                app.changeState('home');
+            }
+            else {
+                app.changeState('login')
+            }
+        }
+    },
+
     home: {
         enter: (app) => {
-            app.ui.home.show();
+            $('#home-view').show();
         },
 
         exit: (app) => {
-            app.ui.home.hide();
+            $('#home-view').hide();
+        }
+    },
+
+    login: {
+        enter: (app) => {
+            app.view = new LoginView(app);
+            app.view.show();
+        },
+
+        exit: (app) => {
+            app.view.hide();
         }
     },
 
@@ -26,21 +48,18 @@ const AppStates = {
 
 class BlowrookApp {
     constructor() {
-        this.ui = this.initUI();
-        this.initStates(AppStates);
-        this.ui.match.hide();
         this.controller = null;
-    }
-
-    initUI() {
-        return {
-            home: new HomeUI(this),
-            match: new MatchUI(this)
-        };
+        this.view = null;
+        this.user = null;
     }
 
     run() {
         console.log('BlowrookApp#run');
+        this.initStates(AppStates);
+    }
+
+    postName(params) {
+        this.user = params.name;
         this.changeState('home');
     }
 }

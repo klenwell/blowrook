@@ -8,16 +8,19 @@
     <h2 id="title">Blowrook Experiment 008</h2>
 
     <div id="app">
-      <div id="home-view">
+      <div id="home-view" class="view">
         <h3>Menu</h3>
         <button id="to-match">Play Match</button>
         <button id="to-exit">Exit</button>
       </div>
-      <div id="match-view">
-        <h3>Match</h3>
+      <div id="login-view" class="view">
+        <h3>Login</h3>
         <label>Your Name:</label>
-        <input id="player-name">
-        <button id="post-player-name">submit</button>
+        <input id="login-name">
+        <button id="post-login-name">submit</button>
+      </div>
+      <div id="match-view" class="view">
+        <h3>Match</h3>
       </div>
     </div>
 
@@ -34,6 +37,7 @@
     <script src="./controllers/match_controller.js"></script>
     <script src="./controllers/round_controller.js"></script>
 
+    <script src="./views/login_view.js"></script>
     <script src="./views/match_view.js"></script>
 
     <script src="./blowrook.js"></script>
