@@ -21,6 +21,33 @@
       </div>
       <div id="match-view" class="view">
         <h3>Match</h3>
+        <table>
+          <thead>
+            <tr>
+              <td class="players">Players</td>
+              <td class="round-1">1</td>
+              <td class="round-2">2</td>
+              <td class="round-3">3</td>
+              <td class="final">Final</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="user">
+              <td class="name"></td>
+              <td class="round-1">0</td>
+              <td class="round-2">0</td>
+              <td class="round-3">0</td>
+              <td class="final">0</td>
+            </tr>
+            <tr class="opponent">
+              <td class="name"></td>
+              <td class="round-1">0</td>
+              <td class="round-2">0</td>
+              <td class="round-3">0</td>
+              <td class="final">0</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -28,11 +55,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <script src="./min/state_machine_mixin.js"></script>
-    <script src="./ui/home_ui.js"></script>
-    <script src="./ui/match_ui.js"></script>
 
     <script src="./models/match.js"></script>
     <script src="./models/round.js"></script>
+    <script src="./models/ai_opponent.js"></script>
 
     <script src="./controllers/match_controller.js"></script>
     <script src="./controllers/round_controller.js"></script>
@@ -42,7 +68,6 @@
     <script src="./views/match_view.js"></script>
 
     <script src="./blowrook.js"></script>
-
 
     <script>
       const app = new BlowrookApp();

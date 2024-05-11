@@ -1,13 +1,10 @@
 const MatchStates = {
     up: {
         enter: (controller) => {
-            controller.view.initPlayerForm();
-        }
-    },
-
-    on: {
-        enter: (controller) => {
-            throw 'TODO';
+            controller.assignOpponent();
+            console.log('assigned opponent:', controller.match.opponent);
+            controller.view.initScoreboard();
+            controller.view.show();
             controller.changeState('nextRound');
         }
     },
@@ -36,8 +33,13 @@ class MatchController {
     constructor(app) {
         this.app = app;
         this.match = new Match();
+        this.match.user = app.user;
         this.view = new MatchView(this);
         this.initStates(MatchStates);
+    }
+
+    assignOpponent() {
+        this.match.opponent = new AiOpponent();
     }
 }
 

@@ -21,7 +21,7 @@ class LoginView {
         button.on('click', (e) => {
             console.log(e, $(this));
             let params = {
-                name: nameField.text()
+                name: nameField.val()
             };
             app.postName(params);
         });

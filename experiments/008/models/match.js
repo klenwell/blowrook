@@ -1,12 +1,8 @@
 class Match {
     constructor() {
         this.round = 0;
-        this.player;
+        this.user;
         this.opponent;
-    }
-
-    savePlayer(name) {
-        this.player = ( name ) ? name : 'Player';
     }
 
     isOver() {
