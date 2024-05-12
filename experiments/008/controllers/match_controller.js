@@ -4,6 +4,7 @@ const MatchStates = {
             controller.assignOpponent();
             console.log('assigned opponent:', controller.match.opponent);
             controller.view.initScoreboard();
+            controller.view.initGameboard();
             controller.view.show();
             controller.changeState('nextRound');
         }
@@ -16,8 +17,12 @@ const MatchStates = {
             }
 
             controller.match.round += 1;
-            let roundController = new RoundController(controller);
-            roundController.changeState('move');
+            controller.roundController = new RoundController(controller);
+            controller.roundController.changeState('move');
+        },
+
+        exit: (controller) => {
+            controller.roundController = null;
         }
     },
 
@@ -35,11 +40,16 @@ class MatchController {
         this.match = new Match();
         this.match.user = app.user;
         this.view = new MatchView(this);
+        this.roundController = null;
         this.initStates(MatchStates);
     }
 
     assignOpponent() {
         this.match.opponent = new AiOpponent();
+    }
+
+    postMove(params) {
+        this.roundController.postMove(params);
     }
 }
 

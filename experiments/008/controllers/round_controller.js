@@ -1,11 +1,19 @@
 const RoundStates = {
     move: {
         enter: (controller) => {
-            controller.view.enablePlacement();
+            controller.enableUserMove();
+        },
+
+        exit: (controller) => {
+            controller.disableUserMove();
         }
     },
 
-    wait: {},
+    wait: {
+        enter: (controller) => {
+            controller.postRoundState();
+        }
+    },
 
     process: {}
 }
@@ -19,14 +27,27 @@ class RoundController {
         this.initStates(RoundStates);
     }
 
+    enableUserMove() {
+        this.view.gameboardEl.show();
+    }
+
+    disableUserMove() {
+        this.view.gameboardEl.hide();
+    }
+
     postMove(params) {
+        this.round.userMove = params;
+        this.changeState('wait');
+    }
+
+    postRoundState(params) {
         // post params
         let request = $.Deferred();
         let ctrl = this;
         let round = this.round;
 
         request
-            .success((roundData) => {
+            .done((roundData) => {
                 round.process(roundData);
 
                 if ( round.isComplete() ) {
@@ -37,7 +58,7 @@ class RoundController {
                 }
             });
 
-        setTimeout(() => { request.resolve({ complete: false }); }, 3000);
+        setTimeout(() => { request.resolve({ complete: false }); }, 750);
     }
 }
 
