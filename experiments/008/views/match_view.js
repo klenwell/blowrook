@@ -20,14 +20,6 @@ class MatchView {
     }
 
     initGameboard() {
-        let moveButton = $('button#post-move');
-        let ctrl = this.controller;
-
-        moveButton.on('click', (e) => {
-            console.log('user makes move');
-            ctrl.postMove(e);
-        });
-
         this.gameboardEl.hide();
     }
 

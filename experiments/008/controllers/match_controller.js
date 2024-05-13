@@ -17,12 +17,12 @@ const MatchStates = {
             }
 
             controller.match.round += 1;
-            controller.roundController = new RoundController(controller);
-            controller.roundController.changeState('move');
+            handler = new RoundHandler(controller);
+            handler.changeState('move');
         },
 
         exit: (controller) => {
-            controller.roundController = null;
+            console.log(`Round ${controller.match.round} over`)
         }
     },
 
@@ -40,7 +40,6 @@ class MatchController {
         this.match = new Match();
         this.match.user = app.user;
         this.view = new MatchView(this);
-        this.roundController = null;
         this.initStates(MatchStates);
     }
 
