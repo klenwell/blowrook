@@ -58,9 +58,9 @@ class BlowrookApp {
         this.initStates(AppStates);
     }
 
-    postName(params) {
+    postLogin(params) {
         console.log('postName', params);
-        this.user = params.name;
+        this.user = new User(params.name);
         this.changeState('home');
     }
 

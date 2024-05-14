@@ -9,7 +9,7 @@ class MatchView {
 
     initScoreboard() {
         const userRow = this.scoreboardEl.find('tr.user');
-        userRow.find('td.name').text(this.match.user);
+        userRow.find('td.name').text(this.match.user.name);
 
         const opponentRow = this.scoreboardEl.find('tr.opponent');
         opponentRow.find('td.name').text(this.match.opponent.name);

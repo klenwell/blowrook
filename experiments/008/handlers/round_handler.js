@@ -1,24 +1,24 @@
 const RoundStates = {
     move: {
-        enter: (controller) => {
-            controller.enableUserMove();
+        enter: (handler) => {
+            handler.enableUserMove();
         },
 
-        exit: (controller) => {
-            controller.disableUserMove();
+        exit: (handler) => {
+            handler.disableUserMove();
         }
     },
 
     wait: {
-        enter: (controller) => {
-            let request = controller.getRoundState();
+        enter: (handler) => {
+            let request = handler.getRoundState({});
 
             request
-                .done(() => {
-                    round.process(roundData);
+                .done((roundData) => {
+                    handler.round.process(roundData);
 
                     if ( round.isComplete() ) {
-                        controller.changeState('process');
+                        handler.changeState('process');
                     }
                     else {
                         const retryInterval = 500;
@@ -36,7 +36,7 @@ class RoundHandler {
     constructor(matchController) {
         this.controller = matchController;
         this.view = matchController.view;
-        this.round = new Round();
+        this.round = new Round(matchController.match.roundNumber);
         this.initStates(RoundStates);
     }
 
@@ -46,7 +46,11 @@ class RoundHandler {
 
         moveButton.on('click', (e) => {
             console.log('user makes move');
-            handler.postMove(e);
+            let params = {
+                user: handler.controller.match.user,
+                event: e
+            }
+            handler.postMove(params);
         });
 
         this.view.gameboardEl.show();
@@ -59,10 +63,10 @@ class RoundHandler {
     }
 
     postMove(params) {
-        let userMove = new UserMove(params);
+        let move = new Move(params.user);
 
-        if ( userMove.isValid() ) {
-            this.round.userMove = userMove;
+        if ( move.isValid() ) {
+            this.round.userMove = move;
             this.changeState('wait');
         }
         else {

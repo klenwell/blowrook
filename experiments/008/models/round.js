@@ -1,6 +1,6 @@
 class Round {
-    constructor() {
-
+    constructor(number) {
+        this.number = number;
     }
 
     process() {

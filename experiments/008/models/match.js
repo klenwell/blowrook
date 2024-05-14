@@ -1,12 +1,16 @@
 class Match {
     constructor() {
-        this.round = 0;
         this.user;
         this.opponent;
+        this.rounds = [];
+    }
+
+    get roundNumber() {
+        return this.rounds.length + 1;
     }
 
     isOver() {
-        return this.round >= 3  && ! this.scoreIsTied();
+        return this.roundNumber >= 3  && ! this.scoreIsTied();
     }
 
     scoreIsTied() {

@@ -19,11 +19,11 @@ class LoginView {
         const app = this.app;
 
         button.on('click', (e) => {
-            console.log(e, $(this));
             let params = {
-                name: nameField.val()
+                name: nameField.val(),
+                event: e
             };
-            app.postName(params);
+            app.postLogin(params);
         });
     }
 }

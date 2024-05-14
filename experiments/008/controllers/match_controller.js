@@ -15,8 +15,6 @@ const MatchStates = {
             if ( controller.match.isOver() ) {
                 return controller.changeState('over');
             }
-
-            controller.match.round += 1;
             handler = new RoundHandler(controller);
             handler.changeState('move');
         },

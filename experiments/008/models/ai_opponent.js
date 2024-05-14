@@ -1,9 +1,10 @@
 class AiOpponent {
     constructor() {
+        this.id = 'ai';
         this.name = 'AI';
     }
 
     makeMove() {
-        return 3;
+        return new Move(this);
     }
 }
