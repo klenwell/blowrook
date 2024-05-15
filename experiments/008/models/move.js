@@ -5,7 +5,7 @@ class Move {
     }
 
     isValid() {
-        const inValidRate = 0.2;
-        return Math.random() > inValidRate;
+        const validRate = 0.5;
+        return Math.random() < validRate;
     }
 }

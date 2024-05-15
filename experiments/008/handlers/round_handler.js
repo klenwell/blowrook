@@ -17,18 +17,22 @@ const RoundStates = {
                 .done((roundData) => {
                     handler.round.process(roundData);
 
-                    if ( round.isComplete() ) {
-                        handler.changeState('process');
+                    if ( handler.round.isComplete() ) {
+                        handler.changeState('complete');
                     }
                     else {
                         const retryInterval = 500;
-                        setTimeout(() => { controller.changeState('wait'); }, retryInterval);
+                        setTimeout(() => { handler.changeState('wait'); }, retryInterval);
                     }
                 });
         }
     },
 
-    process: {}
+    complete: {
+        enter: (handler) => {
+            throw 'update scoreboard';
+        }
+    }
 }
 
 
@@ -72,17 +76,28 @@ class RoundHandler {
         else {
             alert('Invalid move. Try again.');
         }
-        this.round.userMove = params;
-
     }
 
     getRoundState(params) {
         // Get state of round: have both user taken turn? If so, process round. If not, pause and try again.
-        console.log('getRoundState', params, this.round);
+        let roundState = {
+            'user_move': this.round.userMove,
+            'opponent_move': null,
+            'complete': false
+        };
 
-        // post params
+        let opponentMove = new Move(this.controller.match.opponent);
+        let opponentReady = opponentMove.isValid();
+
+        if ( opponentReady ) {
+            roundState.opponent_move = opponentMove;
+            roundState.complete = true;
+        }
+
+        console.log('getRoundState', params, roundState);
+
         let request = $.Deferred();
-        setTimeout(() => { request.resolve({ complete: false }); }, 400);
+        setTimeout(() => { request.resolve(roundState); }, 400);
         return request;
     }
 }
