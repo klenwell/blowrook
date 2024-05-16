@@ -15,9 +15,8 @@ const RoundStates = {
 
             request
                 .done((roundData) => {
-                    handler.round.process(roundData);
-
-                    if ( handler.round.isComplete() ) {
+                    if ( roundData.complete ) {
+                        handler.round.process(roundData);
                         handler.changeState('complete');
                     }
                     else {
@@ -30,7 +29,10 @@ const RoundStates = {
 
     complete: {
         enter: (handler) => {
-            throw 'update scoreboard';
+            handler.match.addRound(handler.round);
+            handler.view.updateScoreboardRound(handler.round);
+            handler.view.updateScoreboardTotal(handler.match);
+            handler.controller.changeState('nextRound')
         }
     }
 }
@@ -40,7 +42,8 @@ class RoundHandler {
     constructor(matchController) {
         this.controller = matchController;
         this.view = matchController.view;
-        this.round = new Round(matchController.match.roundNumber);
+        this.match = matchController.match
+        this.round = new Round(this.match.roundNumber);
         this.initStates(RoundStates);
     }
 
@@ -51,7 +54,7 @@ class RoundHandler {
         moveButton.on('click', (e) => {
             console.log('user makes move');
             let params = {
-                user: handler.controller.match.user,
+                user: handler.match.user,
                 event: e
             }
             handler.postMove(params);
@@ -86,10 +89,11 @@ class RoundHandler {
             'complete': false
         };
 
-        let opponentMove = new Move(this.controller.match.opponent);
+        let opponentMove = new Move(this.match.opponent);
         let opponentReady = opponentMove.isValid();
 
         if ( opponentReady ) {
+            console.log(opponentMove);
             roundState.opponent_move = opponentMove;
             roundState.complete = true;
         }

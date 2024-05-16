@@ -19,6 +19,26 @@ class MatchView {
         });
     }
 
+    updateScoreboardRound(round) {
+        console.log(round);
+        const userRow = this.scoreboardEl.find('tr.user');
+        const opponentRow = this.scoreboardEl.find('tr.opponent');
+        const tdSel = `td.round-${round.number}`;
+
+        userRow.find(tdSel).text(round.scores.user);
+        opponentRow.find(tdSel).text(round.scores.opponent);
+    }
+
+    updateScoreboardTotal(match) {
+        console.log(match)
+        const userRow = this.scoreboardEl.find('tr.user');
+        const opponentRow = this.scoreboardEl.find('tr.opponent');
+        const tdSel = 'td.final';
+
+        userRow.find(tdSel).text(match.scores.user);
+        opponentRow.find(tdSel).text(match.scores.opponent);
+    }
+
     initGameboard() {
         this.gameboardEl.hide();
     }

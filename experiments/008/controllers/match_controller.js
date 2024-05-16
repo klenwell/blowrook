@@ -20,12 +20,13 @@ const MatchStates = {
         },
 
         exit: (controller) => {
-            console.log(`Round ${controller.match.round} over`)
+            console.log(`Round ${controller.match.roundNumber} over`)
         }
     },
 
     over: {
         enter: (controller) => {
+            throw 'match over'
             controller.app.changeState('home');
         }
     }

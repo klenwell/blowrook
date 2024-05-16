@@ -3,11 +3,18 @@ class Round {
         this.number = number;
         this.userMove = null;
         this.opponentMove = null;
+        this.scores = {
+            user: 0,
+            opponent: 0
+        };
     }
 
-    process(params) {
-        this.userMove = params.user_move;
-        this.opponentMove = params.opponent_move;
+    process(roundData) {
+        console.log(roundData);
+        this.userMove = roundData.user_move;
+        this.opponentMove = roundData.opponent_move;
+        this.scores.user = roundData.user_move.value;
+        this.scores.opponent = roundData.opponent_move.value;
     }
 
     isComplete() {
