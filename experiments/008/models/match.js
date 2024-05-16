@@ -29,7 +29,7 @@ class Match {
     }
 
     isOver() {
-        return this.roundNumber >= 3  && ! this.scoreIsTied();
+        return this.roundNumber > 3  && ! this.scoreIsTied();
     }
 
     scoreIsTied() {
