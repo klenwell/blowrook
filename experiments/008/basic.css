@@ -25,3 +25,12 @@ body {
 .view {
     display: none;
 }
+
+table {
+    padding: 1em;
+}
+
+table td {
+    padding: .5em 1em;
+    text-align: center;
+}

@@ -24,30 +24,36 @@
         <table id="scoreboard">
           <thead>
             <tr>
-              <td class="players">Players</td>
-              <td class="round-1">1</td>
-              <td class="round-2">2</td>
-              <td class="round-3">3</td>
-              <td class="final">Final</td>
+              <th class="players">Players</th>
+              <th class="round-1">1</th>
+              <th class="round-2">2</th>
+              <th class="round-3">3</th>
+              <th class="final">Final</th>
             </tr>
           </thead>
           <tbody>
             <tr class="user">
               <td class="name"></td>
-              <td class="round-1">0</td>
-              <td class="round-2">0</td>
-              <td class="round-3">0</td>
+              <td class="round round-1">0</td>
+              <td class="round round-2">0</td>
+              <td class="round round-3">0</td>
               <td class="final">0</td>
             </tr>
             <tr class="opponent">
               <td class="name"></td>
-              <td class="round-1">0</td>
-              <td class="round-2">0</td>
-              <td class="round-3">0</td>
+              <td class="round round-1">0</td>
+              <td class="round round-2">0</td>
+              <td class="round round-3">0</td>
               <td class="final">0</td>
             </tr>
           </tbody>
         </table>
+
+        <div id="message" class="view">
+          <div class="message">match over</div>
+          <div><a href="#" id="get-new-match">new match</a></div>
+        </div>
+
         <div id="gameboard">
           <button id="post-move">Make move</button>
         </div>

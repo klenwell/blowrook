@@ -26,8 +26,7 @@ const MatchStates = {
 
     over: {
         enter: (controller) => {
-            throw 'match over'
-            controller.app.changeState('home');
+            controller.view.showMessage();
         }
     }
 }
@@ -48,6 +47,10 @@ class MatchController {
 
     postMove(params) {
         this.roundController.postMove(params);
+    }
+
+    getNewMatch() {
+        this.app.changeState('home');
     }
 }
 

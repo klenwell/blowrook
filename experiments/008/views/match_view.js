@@ -14,9 +14,15 @@ class MatchView {
         const opponentRow = this.scoreboardEl.find('tr.opponent');
         opponentRow.find('td.name').text(this.match.opponent.name);
 
+        $('td.round, td.final').text(0);
+
         this.scoreboardEl.on('scoreboard:update', (e, score) => {
             console.log(e, score);
         });
+    }
+
+    initGameboard() {
+        this.gameboardEl.hide();
     }
 
     updateScoreboardRound(round) {
@@ -39,8 +45,17 @@ class MatchView {
         opponentRow.find(tdSel).text(match.scores.opponent);
     }
 
-    initGameboard() {
-        this.gameboardEl.hide();
+    showMessage() {
+        let ctrl = this.controller;
+        $('#message').show();
+        $('#get-new-match').on('click', () => {
+            this.controller.getNewMatch();
+        });
+    }
+
+    hideMessage() {
+        $('#message').hide();
+        $('#get-new-match').off();
     }
 
     show() {
@@ -49,5 +64,6 @@ class MatchView {
 
     hide() {
         this.el.hide();
+        this.hideMessage();
     }
 }
