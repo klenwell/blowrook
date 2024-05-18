@@ -41,22 +41,32 @@ const RoundStates = {
 class RoundHandler {
     constructor(matchController) {
         this.controller = matchController;
-        this.view = matchController.view;
-        this.match = matchController.match
         this.round = new Round(this.match.roundNumber);
         this.initStates(RoundStates);
     }
 
+    get view() {
+        return this.controller.view;
+    }
+
+    get match() {
+        return this.controller.match;
+    }
+
+    get moveButton() {
+        return $('button#post-move');
+    }
+
     enableUserMove() {
-        let moveButton = $('button#post-move');
+        console.warn('enableUserMove', this);
         let handler = this;
 
-        moveButton.on('click', (e) => {
-            console.log('user makes move');
+        this.moveButton.on('click', (e) => {
             let params = {
                 user: handler.match.user,
                 event: e
             }
+            console.log('user makes move', params);
             handler.postMove(params);
         });
 
@@ -64,8 +74,8 @@ class RoundHandler {
     }
 
     disableUserMove() {
-        let moveButton = $('button#post-move');
-        moveButton.off('click');
+        console.warn('disableUserMove', this);
+        this.moveButton.off('click');
         this.view.gameboardEl.hide();
     }
 
@@ -78,6 +88,7 @@ class RoundHandler {
         }
         else {
             alert('Invalid move. Try again.');
+            this.changeState('move');
         }
     }
 

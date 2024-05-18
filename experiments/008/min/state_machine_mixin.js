@@ -37,21 +37,18 @@ let MinStateMachineMixin = {
 
     enterNewState(newState) {
         this.state = newState;
+        this.defaultEnter(newState);
 
         if ( this.states[newState]['enter'] ) {
             this.states[newState]['enter'](this);
         }
-        else {
-            this.defaultEnter(newState);
-        }
     },
 
     exitOldState(oldState) {
+        this.defaultExit(oldState);
+
         if ( this.states[oldState] && this.states[oldState]['exit'] ) {
             this.states[oldState]['exit'](this);
-        }
-        else {
-            this.defaultExit(oldState);
         }
     },
 

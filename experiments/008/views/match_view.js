@@ -17,7 +17,7 @@ class MatchView {
         $('td.round, td.final').text(0);
 
         this.scoreboardEl.on('scoreboard:update', (e, score) => {
-            console.log(e, score);
+            console.log('scoreboard:update', e, this.match.scores);
         });
     }
 
@@ -26,7 +26,7 @@ class MatchView {
     }
 
     updateScoreboardRound(round) {
-        console.log(round);
+        console.info(round);
         const userRow = this.scoreboardEl.find('tr.user');
         const opponentRow = this.scoreboardEl.find('tr.opponent');
         const tdSel = `td.round-${round.number}`;
@@ -36,7 +36,6 @@ class MatchView {
     }
 
     updateScoreboardTotal(match) {
-        console.log(match)
         const userRow = this.scoreboardEl.find('tr.user');
         const opponentRow = this.scoreboardEl.find('tr.opponent');
         const tdSel = 'td.final';

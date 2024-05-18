@@ -4,26 +4,38 @@ class HomeView {
         this.el = $('#home-view');
     }
 
+    get matchButton() {
+        return $('button#get-match');
+    }
+
+    get exitButton() {
+        return $('button#post-logout');
+    }
+
     show() {
         this.el.show();
-        this.initFormHandler();
+        this.enableFormHandler();
     }
 
     hide() {
+        this.disableFormHandler();
         this.el.hide();
     }
 
-    initFormHandler() {
-        const matchButton = $('button#get-match');
-        const exitButton = $('button#post-logout');
+    enableFormHandler() {
         const app = this.app;
 
-        matchButton.on('click', (e) => {
+        this.matchButton.on('click', (e) => {
             app.getMatch();
         });
 
-        exitButton.on('click', (e) => {
+        this.exitButton.on('click', (e) => {
             app.postLogout();
         });
+    }
+
+    disableFormHandler() {
+        this.matchButton.off();
+        this.exitButton.off();
     }
 }

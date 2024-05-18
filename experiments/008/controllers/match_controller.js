@@ -20,7 +20,7 @@ const MatchStates = {
         },
 
         exit: (controller) => {
-            console.log(`Round ${controller.match.roundNumber} over`)
+            console.log(`Round ${controller.match.roundNumber - 1} over`)
         }
     },
 
