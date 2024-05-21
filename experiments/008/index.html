@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blowrook Experiment 008</title>
+    <link rel="stylesheet" href="basic.css">
+  </head>
+  <body>
+    <h2 id="title">Blowrook Experiment 008</h2>
+
+    <div id="app">
+      <div id="home-view" class="view">
+        <h3>Menu</h3>
+        <button id="get-match">Play Match</button>
+        <button id="post-logout">Exit</button>
+      </div>
+      <div id="login-view" class="view">
+        <h3>Login</h3>
+        <label>Your Name:</label>
+        <input id="login-name">
+        <button id="post-login-name">submit</button>
+      </div>
+      <div id="match-view" class="view">
+        <h3>Match</h3>
+        <table id="scoreboard">
+          <thead>
+            <tr>
+              <th class="players">Players</th>
+              <th class="round-1">1</th>
+              <th class="round-2">2</th>
+              <th class="round-3">3</th>
+              <th class="final">Final</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="user">
+              <td class="name"></td>
+              <td class="round round-1">0</td>
+              <td class="round round-2">0</td>
+              <td class="round round-3">0</td>
+              <td class="final">0</td>
+            </tr>
+            <tr class="opponent">
+              <td class="name"></td>
+              <td class="round round-1">0</td>
+              <td class="round round-2">0</td>
+              <td class="round round-3">0</td>
+              <td class="final">0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="message" class="view">
+          <div class="message">match over</div>
+          <div><a href="#" id="get-new-match">new match</a></div>
+        </div>
+
+        <div id="gameboard">
+          <button id="post-move">Make move</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="./min/state_machine_mixin.js"></script>
+
+    <script src="./models/match.js"></script>
+    <script src="./models/round.js"></script>
+    <script src="./models/user.js"></script>
+    <script src="./models/ai_opponent.js"></script>
+    <script src="./models/move.js"></script>
+
+    <script src="./controllers/match_controller.js"></script>
+    <script src="./handlers/round_handler.js"></script>
+
+    <script src="./views/login_view.js"></script>
+    <script src="./views/home_view.js"></script>
+    <script src="./views/match_view.js"></script>
+
+    <script src="./blowrook.js"></script>
+
+    <script>
+      const app = new BlowrookApp();
+      app.run();
+    </script>
+  </body>
+</html>
