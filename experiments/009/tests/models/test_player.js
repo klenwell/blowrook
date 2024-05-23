@@ -1,5 +1,3 @@
-const { module, test } = QUnit;
-
 const playerParams = {
     id: 1,
     name: 'klenwell',

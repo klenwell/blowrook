@@ -11,11 +11,15 @@
   <script src="https://cdn.jsdelivr.net/npm/qunit-assert-close@2.1.2/qunit-assert-close.min.js"></script>
 
   <script src="models/player.js"></script>
+  <script src="models/rook.js"></script>
+
+  <script src="tests/settings.js"></script>
   <script src="tests/models/test_player.js"></script>
+  <script src="tests/models/test_rook.js"></script>
 
   <script>
-    QUnit.module('test suite', hooks => {
-        QUnit.test('harness', function(assert) {
+    module('test suite', hooks => {
+        test('harness', function(assert) {
             assert.ok(true);
         });
     });
