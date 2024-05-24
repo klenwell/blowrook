@@ -1,11 +1,10 @@
-const playerParams = {
-    id: 1,
-    name: 'klenwell',
-    email: 'klenwell@example.com'
-};
-
-
 module('Player', hooks => {
+    const playerParams = {
+        id: 1,
+        name: 'alpha',
+        email: 'alpha@example.com'
+    };
+
     module('.constructor', hooks => {
         test('when passed complete params', assert => {
             let player = new Player(playerParams);
