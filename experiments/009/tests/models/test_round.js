@@ -1,18 +1,6 @@
 module('Round', hooks => {
     let alphaMove, betaMove;
 
-    const alphaPlayerParams = {
-        id: 1,
-        name: 'alpha',
-        email: 'alpha@example.com'
-    };
-
-    const betaPlayerParams = {
-        id: 2,
-        name: 'beta',
-        email: 'beta@example.com'
-    };
-
     const rookParams = {
         x: 100,
         y: 100,
@@ -20,12 +8,12 @@ module('Round', hooks => {
     };
 
     let alphaMoveParams = {
-        player: new Player(alphaPlayerParams),
+        player: Fixture.player('alpha'),
         rook: new Rook(rookParams)
     };
 
     let betaMoveParams = {
-        player: new Player(betaPlayerParams),
+        player: Fixture.player('beta'),
         rook: new Rook(rookParams)
     };
 
