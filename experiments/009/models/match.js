@@ -11,14 +11,13 @@ class Match {
     get scores() {
         let scores = {};
 
+        this.players.forEach((player) => {
+            scores[player.id] = 0;
+        });
+
         this.rounds.forEach((round) => {
             Object.keys(round.scores).forEach((playerId) => {
-                if (scores[playerId]) {
-                    scores[playerId] += round.scores[playerId];
-                }
-                else {
-                    scores[playerId] = round.scores[playerId];
-                }
+                scores[playerId] += round.scores[playerId];
             });
         });
 

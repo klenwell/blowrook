@@ -2,6 +2,10 @@ class Move {
     constructor(params) {
         this.player = params.player;
         this.rook = params.rook;
-        this.score = 0;
+        this.score = params.score ? params.score : 0;
+    }
+
+    addScore(score) {
+        this.score += score;
     }
 }
