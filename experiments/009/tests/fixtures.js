@@ -10,8 +10,4 @@ class Fixture {
             email: email
         });
     }
-
-    static staticMethod() {
-    return 'static method has been called.';
-  }
 }
