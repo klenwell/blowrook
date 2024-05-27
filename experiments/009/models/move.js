@@ -4,8 +4,4 @@ class Move {
         this.rook = params.rook;
         this.score = params.score ? params.score : 0;
     }
-
-    addScore(score) {
-        this.score += score;
-    }
 }

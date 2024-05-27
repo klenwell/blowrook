@@ -1,11 +1,10 @@
-const rookParams = {
-    x: 100,
-    y: 100,
-    r: 100
-};
-
-
 module('Rook', hooks => {
+    const rookParams = {
+        x: 100,
+        y: 100,
+        r: 100
+    };
+
     module('.constructor', hooks => {
         test('when passed complete params', assert => {
             let rook = new Rook(rookParams);
