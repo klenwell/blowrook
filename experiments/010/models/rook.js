@@ -5,4 +5,12 @@ class Rook {
         this.x = params.x;
         this.y = params.y;
     }
+
+    get circle() {
+        return {
+            r: this.radius,
+            x: this.x,
+            y: this.y
+        }
+    }
 }

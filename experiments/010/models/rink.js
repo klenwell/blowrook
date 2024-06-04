@@ -11,7 +11,15 @@ class Rink {
         this.y = RinkDimensions.Y;
     }
 
+    get circle() {
+        return {
+            r: this.radius,
+            x: this.x,
+            y: this.y
+        }
+    }
+
     containsRook(rook) {
-        throw 'TODO'
+        return this.radius >= rook.radius && Circle.containsCircle(this.circle, rook.circle);
     }
 }
