@@ -1,6 +1,8 @@
 class Match {
     constructor(params) {
+        params = params ? params : {};
         this.players = params.players ? params.players : [];
+        this.rink = params.rink;
         this.rounds = [];
     }
 
