@@ -15,10 +15,10 @@ class Scorekeeper {
                     return;
                 }
 
-                if ( move.overlaps(otherMove) ) {
+                if ( move.conflictsWith(otherMove) ) {
                     // Smaller rook wins conflict.
                     if ( move.rook.radius > otherMove.rook.radius ) {
-                        move.deactivative();
+                        move.deactivate();
                         return;
                     }
                 }
@@ -26,9 +26,9 @@ class Scorekeeper {
 
             roundMoves.push(move);
 
-            let playerRoundScore = roundPlayerScores[move.player] ? roundPlayerScores[move.player] : 0;
+            let playerRoundScore = roundPlayerScores[move.player.id] ? roundPlayerScores[move.player.id] : 0;
             let moveScore = keeper.scoreMove(move);
-            roundPlayerScores[move.player] = playerRoundScore + moveScore;
+            roundPlayerScores[move.player.id] = playerRoundScore + moveScore;
         });
 
         return {
@@ -38,7 +38,14 @@ class Scorekeeper {
     }
 
     scoreMove(move) {
-        throw 'TODO';
+        if ( ! move.isActive() ) {
+            return 0;
+        }
+
+        const outerOverlap = Circle.overlapArea(this.rink.circle, move.rook.circle);
+        const innerOverlap = Circle.overlapArea(this.rink.innerCircle, move.rook.circle);
+        const areaScore = outerOverlap + (2 * innerOverlap)
+        return Math.round(areaScore / 100);
     }
 
     scoreMatch(match) {

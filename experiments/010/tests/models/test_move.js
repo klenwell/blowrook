@@ -35,4 +35,19 @@ module('Move', hooks => {
             assert.equal(move.rook.radius, rookParams.r);
         });
     });
+
+    module('#conflictsWith', hooks => {
+        test('when one rook encompasses another', assert => {
+            let alphaPlayer = Fixture.player('alpha');
+            let betaPlayer = Fixture.player('beta');
+            let alphaRook = new Rook({x: 100, y: 100, r: 50});
+            let betaRook = new Rook({x: 100, y: 100, r: 10});
+
+            let alphaMove = new Move({player: alphaPlayer, rook: alphaRook});
+            let betaMove = new Move({player: betaPlayer, rook: betaRook});
+
+            assert.true(alphaMove.conflictsWith(betaMove));
+            assert.true(betaMove.conflictsWith(alphaMove));
+        });
+    });
 });

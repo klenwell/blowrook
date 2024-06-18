@@ -8,11 +8,17 @@ class Move {
     }
 
     isActive() {
-        return this.status == 'active';
+        return this.status === 'active';
     }
 
-    overlaps(otherMove) {
-        throw 'TODO';
+    conflictsWith(otherMove) {
+        if ( this.player === otherMove.player ) {
+            return false;
+        }
+
+        const thisCircle = this.rook.circle;
+        const otherCircle = otherMove.rook.circle;
+        return Circle.overlapsCircle(thisCircle, otherCircle);
     }
 
     deactivate() {
