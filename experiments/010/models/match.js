@@ -10,6 +10,24 @@ class Match {
         return this.rounds.length;
     }
 
+    get moves() {
+        let moves = [];
+        this.rounds.forEach((round) => {
+            moves = moves.concat(round.moves);
+        });
+        return moves;
+    }
+
+    get activeMoves() {
+        let activeMoves = [];
+        this.moves.forEach((move) => {
+            if ( move.isActive() ) {
+                activeMoves.push(move);
+            }
+        });
+        return activeMoves;
+    }
+
     get scores() {
         let scores = {};
 

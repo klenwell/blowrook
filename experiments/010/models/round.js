@@ -22,6 +22,16 @@ class Round {
         return scores;
     }
 
+    get activeMoves() {
+        let activeMoves = [];
+        this.moves.forEach((move) => {
+            if ( move.isActive() ) {
+                activeMoves.push(move);
+            }
+        });
+        return activeMoves;
+    }
+
     addMove(move) {
         this.moves.push(move);
     }
